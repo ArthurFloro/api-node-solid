@@ -1,0 +1,12 @@
+import { prisma } from '@/lib/prisma.js'
+import { Prisma } from '@prisma/client/extension'
+
+export class PrismaUserRepository {
+  async create(data: Prisma.UserCreateInput) {
+    const user = await prisma.user.create({
+      data,
+    })
+
+    return user
+  }
+}
