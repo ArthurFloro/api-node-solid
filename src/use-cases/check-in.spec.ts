@@ -6,6 +6,7 @@ import { Decimal } from '@prisma/client/runtime/index-browser'
 import { MaxNumberOffCheckInsError } from './errors/max-number-off-check-ins-error.js'
 import { MaxDistanceError } from './errors/max-distance-error.js'
 
+
 let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase

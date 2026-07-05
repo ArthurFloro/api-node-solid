@@ -3,6 +3,8 @@ import type { CheckInsRepository } from '@/repositories/check-ins-repository.js'
 import type { GymsRepository } from '@/repositories/gyms-repository.js'
 import { ResourceNotFoundError } from './errors/resource-not-found-error.js'
 import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates.js'
+import { MaxDistanceError } from './errors/max-distance-error.js'
+import { MaxNumberOffCheckInsError } from './errors/max-number-off-check-ins-error.js'
 
 interface CheckInUseCaseRequest {
   userId: string
@@ -19,7 +21,7 @@ export class CheckInUseCase {
   constructor(
     private chekInRepository: CheckInsRepository,
     private gymsRepository: GymsRepository,
-  ) {}
+  ) { }
 
   async execute({
     userId,
@@ -44,7 +46,7 @@ export class CheckInUseCase {
     const MAX_DISTANCE_IN_KILOMETERS = 0.1
 
     if (distance > MAX_DISTANCE_IN_KILOMETERS) {
-      throw new Error()
+      throw new MaxDistanceError()
     }
 
     const checkInOnSameDate = await this.chekInRepository.findByUserIdOnDate(
@@ -53,7 +55,7 @@ export class CheckInUseCase {
     )
 
     if (checkInOnSameDate) {
-      throw new Error('Check-in already exists for this user and date.')
+      throw new MaxNumberOffCheckInsError()
     }
 
     const checkIn = await this.chekInRepository.create({
