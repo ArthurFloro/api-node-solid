@@ -1,6 +1,6 @@
-import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository.js'
 import { expect, describe, it, beforeEach } from 'vitest'
 import { FetchNearbyGymsUseCase } from './fetch-nearby-gyms.js'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository.js'
 
 
 let gymsRepository: InMemoryGymsRepository
@@ -17,27 +17,24 @@ describe('Fetch Nearby Gyms Use Case', () => {
             title: 'Near Gym',
             description: null,
             phone: null,
-            latitude: -8.0058014,
-            longitude: -34.8898221,
+            latitude: -27.2092052,
+            longitude: -49.6401091,
         })
 
         await gymsRepository.create({
             title: 'Far Gym',
             description: null,
             phone: null,
-            latitude: -7.7905027,
-            longitude: -34.8426191,
+            latitude: -27.0610928,
+            longitude: -49.5229501,
         })
 
         const { gyms } = await sut.execute({
-            userlatitude: -8.0058014,
-            userLongitude: -34.8898221,
+            userLatitude: -27.2092052,
+            userLongitude: -49.6401091,
         })
 
         expect(gyms).toHaveLength(1)
-        expect(gyms).toEqual([
-            expect.objectContaining({ title: 'Near Gym' }),
-        ])
+        expect(gyms).toEqual([expect.objectContaining({ title: 'Near Gym' })])
     })
-
 })
