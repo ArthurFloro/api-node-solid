@@ -1,8 +1,9 @@
 import { Decimal } from '@prisma/client/runtime/index-browser'
 import type { Gym, Prisma } from 'generated/prisma/client.js'
 import { randomUUID } from 'node:crypto'
+import type { GymsRepository } from '../gyms-repository.js'
 
-export class InMemoryGymsRepository {
+export class InMemoryGymsRepository implements GymsRepository {
   public items: Gym[] = []
 
   async findById(id: string) {
@@ -13,6 +14,10 @@ export class InMemoryGymsRepository {
     }
 
     return gym
+  }
+
+  async searchMany(query: string, page: number) {
+    return this.items.filter((item) => item.title.includes(query)).slice((page - 1) * 20, page * 20)
   }
 
   async create(data: Prisma.GymCreateInput) {
