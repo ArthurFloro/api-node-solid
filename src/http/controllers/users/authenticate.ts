@@ -2,6 +2,7 @@ import type { FastifyRequest, FastifyReply } from 'fastify'
 import z from 'zod'
 import { InvalidCredentialsError } from '@/use-cases/errors/invalid-credentials-error.js'
 import { makeAuthenticateUseCase } from '@/use-cases/factories/make-authenticate-use-case.js'
+import { env } from '@/env/index.js'
 
 export async function authenticate(
   request: FastifyRequest,
@@ -39,7 +40,7 @@ export async function authenticate(
 
     return reply.setCookie('refreshToken', refreshToken, {
       path: '/',
-      secure: true,
+      secure: env.NODE_ENV === 'production',
       sameSite: true,
       httpOnly: true
     }).status(200).send({
